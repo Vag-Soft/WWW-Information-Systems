@@ -1,3 +1,44 @@
 /* BEGIN CODE HERE */
-
+body {
+    margin: 20px;
+    font-family: cursive;
+  }
+  div{
+      width:1200px;
+  }
+  div.inputForms {
+      display:grid;
+      grid-template-columns: max-content max-content;
+      grid-gap:5px;
+      border:200px 200px;
+  }
+  div.settings label       { text-align:right; }
+  div.settings label:after { content: ":"; }
+  
+  .Button {
+    text-align:right;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color:#0d6efd;
+    color:white;
+    padding:5px 15px;
+    border-radius:8px;
+    border:none;
+  }
+  .Button:hover {
+        background-color:#002ead;
+        transition: 0.7s;
+    }
+  .Button:active {
+      background-color: #ffbf00;
+  }
+  div.Footer{
+    text-align:center;
+    height:100px;
+    width: auto;
+    border-style:outset;
+    border-bottom-style: none;
+    border-right-style: none;
+    border-left-style: none;
+  }
 /* END CODE HERE */
