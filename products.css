@@ -3,9 +3,6 @@ body {
     margin: 20px;
     font-family: cursive;
   }
-  div{
-      width:1200px;
-  }
   div.inputForms {
       display:grid;
       grid-template-columns: max-content max-content;
@@ -34,9 +31,8 @@ body {
   }
   div.Footer{
     text-align:center;
-    height:100px;
     width: auto;
-    border-style:outset;
+    height:100px;
     border-bottom-style: none;
     border-right-style: none;
     border-left-style: none;
