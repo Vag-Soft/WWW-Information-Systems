@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 # END CODE HERE
 
 
@@ -113,30 +114,28 @@ def content_based_filtering():
 @app.route("/crawler", methods=["GET"])
 def crawler():
     # BEGIN CODE HERE
-    def get_courses_for_semester(semester_number):
-        driver = webdriver.Chrome()
-        url = "https://qa.auth.gr/el/x/studyguide/600000438/current"
-        driver.get(url)
+#    semester_number = request.args.get('semester')
+    semester_number = 5
+    options = Options()
+    options.headless = True
+    driver = webdriver.Chrome(options=options)
+    url = "https://qa.auth.gr/el/x/studyguide/600000438/current"
+    driver.get(url)
+    semester_element_id = f"sem-" + str(semester_number)
+    semester_element = driver.find_element(By.ID, semester_element_id)
 
-        semester_element_id = f"sem-" + str(semester_number)
-        semester_element = driver.find_element(By.ID, semester_element_id)
-
-        courses_table = semester_element.find_element(By.XPATH,
+    courses_table = semester_element.find_element(By.XPATH,
                                                       "./following-sibling::table[@class='sortable-datatable courses-per-orientation columns-4']")
-        course_rows = courses_table.find_elements(By.TAG_NAME, "tr")[1:]  # Προσπερνάμε την πρώτη γραμμή (headers)
+    course_rows = courses_table.find_elements(By.TAG_NAME, "tr")[1:]  # Προσπερνάμε την πρώτη γραμμή (headers)
 
-        courses_list = []
-        for row in course_rows:
-            cells = row.find_elements(By.TAG_NAME, "td")
-            course_title = cells[1].text
-            courses_list.append(course_title)
+    courses_list = []
+    for row in course_rows:
+        cells = row.find_elements(By.TAG_NAME, "td")
+        course_title = cells[1].text
+        courses_list.append(course_title)
 
-        driver.quit()
-        return courses_list  # επιστρέφει τη λίστα με τα μαθήματα
-
-    semester_number = 5  # δοκίμασε εξάμηνο από 1 μέχρι 8
-    courses = get_courses_for_semester(semester_number)
-    return courses
+    driver.quit()
+    return courses_list  # επιστρέφει τη λίστα με τα μαθήματα
     # END CODE HERE
 
 
