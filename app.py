@@ -114,18 +114,15 @@ def content_based_filtering():
 @app.route("/crawler", methods=["GET"])
 def crawler():
     # BEGIN CODE HERE
-#    semester_number = request.args.get('semester')
-    semester_number = 5
+    semester_number = (request.args.get('semester'))
     options = Options()
     options.headless = True
     driver = webdriver.Chrome(options=options)
-    url = "https://qa.auth.gr/el/x/studyguide/600000438/current"
+    url = f"https://qa.auth.gr/el/x/studyguide/600000438/current/"
     driver.get(url)
     semester_element_id = f"sem-" + str(semester_number)
     semester_element = driver.find_element(By.ID, semester_element_id)
-
-    courses_table = semester_element.find_element(By.XPATH,
-                                                      "./following-sibling::table[@class='sortable-datatable courses-per-orientation columns-4']")
+    courses_table = semester_element.find_element(By.XPATH,"./following-sibling::table[@class='sortable-datatable courses-per-orientation columns-4']")
     course_rows = courses_table.find_elements(By.TAG_NAME, "tr")[1:]  # Προσπερνάμε την πρώτη γραμμή (headers)
 
     courses_list = []
