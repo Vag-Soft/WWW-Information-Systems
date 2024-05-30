@@ -54,16 +54,17 @@
   <!-- Main body -->
   <div class="container" style="width: 1200px">
     <!-- Search box -->
-    <div class="row align-items-center my-4">
-      <label class="col-auto form-label" style="padding: 0" for="inputSearch">Search a product</label>
-      <div class="col-auto">
-        <div class="input-group">
-          <input type="search" class="form-control" id="inputSearch">
-          <button class="btn btn-primary" type="submit" id="searchBtn">Search</button>
+    <form id="SearchForm" method="get">
+      <div class="row align-items-center my-4">
+        <label class="col-auto form-label" style="padding: 0" for="searchQuery">Search a product</label>
+        <div class="col-auto">
+          <div class="input-group">
+            <input type="search" class="form-control" id="searchQuery" name="searchQuery">
+            <button class="btn btn-primary" type="button" id="searchButton">Search</button>
+          </div>
         </div>
       </div>
-    </div>
-    
+    </form>
 
     <!-- Table -->
     <div class="row mb-3">
@@ -82,7 +83,7 @@
             <th scope="col">Size</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="resultsContainer">
 
         </tbody>
       </table>

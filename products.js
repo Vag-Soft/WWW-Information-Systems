@@ -1,14 +1,53 @@
 const api = "http://127.0.0.1:5000";
 
 window.onload = () => {
-    // BEGIN CODE HERE
 
+    // BEGIN CODE HERE
+    document.getElementById('searchButton').addEventListener('click', searchButtonOnClick);
+    document.getElementById('inputForms').addEventListener('submit', productFormOnSubmit);
     // END CODE HERE
 }
 
 searchButtonOnClick = () => {
     // BEGIN CODE HERE
+    const searchQuery = document.getElementById('searchQuery').value;
+    if (!searchQuery.trim()) {
+        alert("The search query must be filled out.");
+        return;
+    }
 
+    const res = new XMLHttpRequest();
+    res.open("GET", `${api}/search?name=${encodeURIComponent(searchQuery)}`, true);
+    res.onreadystatechange = function() {
+        if (res.readyState == 4) {
+            if (res.status == 200) {
+                const results = JSON.parse(res.responseText);
+                const resultsContainer = document.getElementById('resultsContainer');
+                resultsContainer.innerHTML = '';
+
+                if (results.length === 0) {
+                    const noResultsElement = document.createElement('tr');
+                    noResultsElement.innerHTML = '<td colspan="6">No results found</td>';
+                    resultsContainer.appendChild(noResultsElement);
+                } else {
+                    results.forEach(result => {
+                        const resultElement = document.createElement('tr');
+                        resultElement.innerHTML = `
+                            <td>${result.id}</td>
+                            <td>${result.name}</td>
+                            <td>${result.production_year}</td>
+                            <td>${result.price}</td>
+                            <td>${result.color}</td>
+                            <td>${result.size}</td>`;
+                        resultsContainer.appendChild(resultElement);
+                    });
+                }
+            } else {
+                alert("Search request failed.");
+            }
+        }
+    };
+    res.send();
     // END CODE HERE
 }
 
