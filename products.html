@@ -93,23 +93,28 @@
       <h1>
         Add a product
       </h1>
-      <div class="inputForms">
-        <label>Name</label>
-        <input type="text" />
-  
-        <label>Production year</label>
-        <input type="text" />
-  
-        <label>Price</label>
-        <input type="text" />
-        <label>Color</label>
-        <input type="text" />
-  
-        <label>Size</label>
-        <input type="text" />
-      </div>
+      <form id="inputForms" method="post">
+
+        <div class="inputForms">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name"/>
+
+          <label for="production_year">Production year</label>
+          <input type="text" id="production_year" name="production_year"/>
+
+          <label for="price">Price</label>
+          <input type="text" id="price" name="price"/>
+
+          <label name="color">Color</label>
+          <input type="text" id="color" name="color"/>
+
+          <label name="size">Size</label>
+          <input type="text" id="size" name="size"/>
+        </div>
+
+      </form>
       <div style="text-align:right">
-        <button class="Button" type="button">Save</button>
+        <button class="Button" type="button" onclick="productFormOnSubmit()">Save</button>
       </div>
     </div>
 
