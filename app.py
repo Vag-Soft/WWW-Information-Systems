@@ -171,7 +171,7 @@ def content_based_filtering():
 def crawler():
     # BEGIN CODE HERE
     semester_number = (request.args.get('semester'))
-    print(semester_number)
+
     if semester_number.isdigit() and 0 < int(semester_number) < 9:
         options = Options()
         options.headless = True
