@@ -77,6 +77,10 @@ productFormOnSubmit = (event) => {
     {
         alert("price must only contain '.' and digits");
     }
+    else if(parseFloat(price) <= 0)
+    {
+        alert("price must be higher than 0");
+    }
     else if(color != 1 && color != 2 && color != 3)
     {
         alert("color must be 1 or 2 or 3")

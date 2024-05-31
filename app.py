@@ -40,9 +40,6 @@ def search():
 
     results = []  # Λίστα για τα αποτελέσματα αναζήτησης
     for product in products:
-        # results.append({
-        #     'id': product['id'], 'name': product['name'], 'production_year': product['production_year'], 'price': product['price'], 'color': product['color'], 'size': product['size']
-        # })
         results.append({
             'color': product['color'], 'name': product['name'], 'production_year': product['production_year'],
             'price': product['price'], 'id': product['id'], 'size': product['size']
@@ -60,31 +57,6 @@ def search():
 
 @app.route("/add-product", methods=["POST"])
 def add_product():
-    # ΕΙΣΑΓΩΓΗ ΤΩΝ ΔΕΔΟΜΕΝΩΝ
-    """mongo.db.products.insert_many([
-        {"id": "1", "name": "Apple juice", "production_year": 2024, "price": 2.99, "color": 1, "size": 3},
-        {"id": "2", "name": "Pineapple juice", "production_year": 2024, "price": 3.49, "color": 2, "size": 3},
-        {"id": "3", "name": "Orange juice", "production_year": 2024, "price": 2.79, "color": 2, "size": 2},
-        {"id": "4", "name": "Grape juice", "production_year": 2024, "price": 4.99, "color": 1, "size": 4},
-        {"id": "5", "name": "Beef Meat", "production_year": 2023, "price": 7.99, "color": 1, "size": 3},
-        {"id": "6", "name": "Chicken Meat", "production_year": 2024, "price": 5.49, "color": 2, "size": 2},
-        {"id": "7", "name": "Pork Meat", "production_year": 2022, "price": 6.99, "color": 1, "size": 3},
-        {"id": "8", "name": "Lamb Meat", "production_year": 2024, "price": 9.99, "color": 1, "size": 4},
-        {"id": "9", "name": "Goat Milk", "production_year": 2023, "price": 3.99, "color": 3, "size": 4},
-        {"id": "10", "name": "Almond Milk", "production_year": 2024, "price": 4.49, "color": 3, "size": 2},
-        {"id": "11", "name": "Cow Milk", "production_year": 2023, "price": 2.99, "color": 3, "size": 4},
-        {"id": "12", "name": "Coconut Milk", "production_year": 2024, "price": 5.99, "color": 3, "size": 2},
-        {"id": "13", "name": "Red Apple", "production_year": 2024, "price": 0.99, "color": 1, "size": 2},
-        {"id": "14", "name": "Yellow Apple", "production_year": 2023, "price": 1.19, "color": 2, "size": 1},
-        {"id": "15", "name": "Paper A1", "production_year": 2020, "price": 1.99, "color": 2, "size": 4},
-        {"id": "16", "name": "Paper A2", "production_year": 2019, "price": 1.49, "color": 3, "size": 3},
-        {"id": "17", "name": "Paper A3", "production_year": 2020, "price": 0.99, "color": 1, "size": 2},
-        {"id": "18", "name": "Paper A6", "production_year": 2019, "price": 0.59, "color": 2, "size": 1},
-        {"id": "19", "name": "Potatoes", "production_year": 2022, "price": 2.49, "color": 2, "size": 3},
-        {"id": "20", "name": "Baby Potatoes", "production_year": 2024, "price": 1.99, "color": 2, "size": 1}
-
-    ])
-    return jsonify({"message": "Products added successfully"})"""
     data = request.json  # Λαμβάνουμε τα δεδομένα από το body του POST request
 
     # Έλεγχος αν υπάρχει ήδη προϊόν με το ίδιο όνομα στη βάση
@@ -199,38 +171,32 @@ def content_based_filtering():
 def crawler():
     # BEGIN CODE HERE
     semester_number = (request.args.get('semester'))
-    options = Options()
-    options.headless = True
-    driver = webdriver.Chrome(options=options)
-    url = f"https://qa.auth.gr/el/x/studyguide/600000438/current/"
-    driver.get(url)
-    semester_element_id = f"sem-" + str(semester_number)
-    semester_element = driver.find_element(By.ID, semester_element_id)
-    courses_table = semester_element.find_element(By.XPATH,
-                                                  "./following-sibling::table[@class='sortable-datatable courses-per-orientation columns-4']")
-    course_rows = courses_table.find_elements(By.TAG_NAME, "tr")[1:]  # Προσπερνάμε την πρώτη γραμμή (headers)
+    print(semester_number)
+    if semester_number.isdigit() and 0 < int(semester_number) < 9:
+        options = Options()
+        options.headless = True
+        driver = webdriver.Chrome(options=options)
+        url = f"https://qa.auth.gr/el/x/studyguide/600000438/current/"
+        driver.get(url)
+        semester_element_id = f"sem-" + str(semester_number)
+        semester_element = driver.find_element(By.ID, semester_element_id)
+        courses_table = semester_element.find_element(By.XPATH,
+                                                      "./following-sibling::table[@class='sortable-datatable courses-per-orientation columns-4']")
+        course_rows = courses_table.find_elements(By.TAG_NAME, "tr")[1:]  # Προσπερνάμε την πρώτη γραμμή (headers)
 
-    courses_list = []
-    for row in course_rows:
-        cells = row.find_elements(By.TAG_NAME, "td")
-        course_title = cells[1].text
-        courses_list.append(course_title)
+        courses_list = []
+        for row in course_rows:
+            cells = row.find_elements(By.TAG_NAME, "td")
+            course_title = cells[1].text
+            courses_list.append(course_title)
 
-    driver.quit()
-    return courses_list  # επιστρέφει τη λίστα με τα μαθήματα
+        driver.quit()
+        return courses_list  # επιστρέφει τη λίστα με τα μαθήματα
+    else:
+        return "Invalid semester number"
     # END CODE HERE
 
 
 if __name__ == "__main__":
     app.run(debug=True)
 
-    # mongo.db.products.delete_many({})
-    # mongo.db.products.insert_many(
-    #    [
-    #       {"name": "Egg", "production_year": 2000, "price": 3, "color": 1, "size": 1},
-    #       {"name": "Milk", "production_year": 2001, "price": 5, "color": 1, "size": 2},
-    #       {"name": "Toast", "production_year": 2000, "price": 5, "color": 2, "size": 3},
-    #       {"name": "Juice", "production_year": 2002, "price": 10, "color": 3, "size": 3},
-    #       {"name": "Meat", "production_year": 2003, "price": 20, "color": 3, "size": 4},
-    #  ]
-    # )
